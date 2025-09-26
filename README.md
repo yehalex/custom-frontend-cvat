@@ -2,29 +2,19 @@
 
 A custom React frontend that integrates with a self-hosted CVAT (Computer Vision Annotation Tool) instance, featuring customized CVAT UI components and task management capabilities.
 
-## Architecture
-
-```
-┌─────────────────┐  API calls  ┌─────────────────┐
-│                 │ ────────────→ │                 │
-│ Custom React    │              │ CVAT Server     │
-│ Frontend        │ ←──────────── │ (Modified)      │
-│ (Port 5173)     │  JSON data   │ (Port 8080)     │
-└─────────────────┘              └─────────────────┘
-```
-
 ## Prerequisites
 
 - Docker installed and running
 - Node.js 18+ and npm
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
 ### 1. CVAT Self-Hosted Setup
 
+The CVAT repository is already included in this project with custom modifications. Navigate to the CVAT directory and set it up:
+
 ```bash
-# Clone CVAT repository
-git clone https://github.com/opencv/cvat
+# Navigate to the included CVAT directory
 cd cvat
 
 # Create environment file
@@ -34,6 +24,7 @@ echo "CVAT_POSTGRES_PASSWORD=cvat_password" >> .env
 # Start CVAT services
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 
+# Wait 5-10 minutes for services to initialize
 docker-compose logs -f cvat_server
 ```
 
@@ -85,20 +76,21 @@ The custom frontend will be available at http://localhost:5173
    // COMMENTED OUT: Original redo button
    {
      /* <CVATTooltip overlay={`Redo: ${redoAction} ${redoShortcut}`}>
-       <Button
-           style={{ pointerEvents: redoAction ? 'initial' : 'none', opacity: redoAction ? 1 : 0.5 }}
-           type='link'
-           className='cvat-annotation-header-redo-button cvat-annotation-header-button'
-           onClick={onRedoClick}
-       >
-           <Icon component={RedoIcon} />
-           Redo
-       </Button>
-   </CVATTooltip> */
+         <Button
+             style={{ pointerEvents: redoAction ? 'initial' : 'none', opacity: redoAction ? 1 : 0.5 }}
+             type='link'
+             className='cvat-annotation-header-redo-button cvat-annotation-header-button'
+             onClick={onRedoClick}
+         >
+             <Icon component={RedoIcon} />
+             Redo
+         </Button>
+     </CVATTooltip> */
    }
    ```
 
 2. **Added Custom Button**
+
    ```typescript
    // ADDED: Custom button
    <CVATTooltip overlay="Custom button">
@@ -129,7 +121,7 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 ```
 
-## 🧪 Testing the Implementation
+## Testing the Implementation
 
 ### 1. Test CVAT Modifications
 
@@ -149,20 +141,20 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 
 ### 3. Integration Testing
 
-- ✅ **Login/Logout Flow:** Custom frontend authentication works
-- ✅ **Project List:** Displays CVAT tasks via API
-- ✅ **CVAT Modifications:** Custom button added, redo button removed
-- ✅ **Task Details:** Detailed task view with metadata and controls
+- Login/Logout Flow: Custom frontend authentication works
+- Project List: Displays CVAT tasks via API
+- CVAT Modifications: Custom button added, redo button removed
+- Task Details: Detailed task view with metadata and controls
 
 ## Components Implemented
 
 | Component         | Description                           | Status      |
 | ----------------- | ------------------------------------- | ----------- |
-| `LoginPanel.jsx`  | Handles CVAT authentication           | ✅ Working  |
-| `ProjectList.jsx` | Shows tasks from CVAT API             | ✅ Working  |
-| `TaskDetails.jsx` | Detailed task view with metadata      | ✅ Working  |
-| `CVATIframe.jsx`  | iframe container (see limitations)    | Not Working |
-| `App.jsx`         | Main container with responsive layout | ✅ Working  |
+| `LoginPanel.jsx`  | Handles CVAT authentication           | Working     |
+| `ProjectList.jsx` | Shows tasks from CVAT API             | Working     |
+| `TaskDetails.jsx` | Detailed task view with metadata      | Working     |
+| `CVATIframe.jsx`  | iframe container (see limitations)    | NOT Working |
+| `App.jsx`         | Main container with responsive layout | Working     |
 
 ### API Integration
 
@@ -206,11 +198,10 @@ Refused to display 'http://localhost:8080/tasks/123' in a frame because it has s
 
 The custom frontend provides:
 
-- ✅ Authentication working with CVAT
-- ✅ Task list loading from CVAT API
-- ✅ Detailed task view with metadata
-- ✅ UI layout and project switching logic
-- ⚠️ iframe integration limited by security headers
+- Authentication working with CVAT
+- Task list loading from CVAT API
+- Detailed task view with metadata
+- UI layout and project switching logic
 
 ## Project Structure
 
